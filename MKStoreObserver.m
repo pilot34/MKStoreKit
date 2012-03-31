@@ -73,11 +73,8 @@
 }
 
 - (void) failedTransaction: (SKPaymentTransaction *)transaction
-{
-    if(transaction.error.code == SKErrorPaymentCancelled)
-        [[MKStoreManager sharedManager] transactionCanceled:transaction];
-    else
-        [[MKStoreManager sharedManager] failedTransaction:transaction];
+{	
+	[[MKStoreManager sharedManager] transactionCanceled:transaction];
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];	
 }
 

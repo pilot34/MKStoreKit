@@ -64,7 +64,7 @@
 
 // use this method to invoke a purchase
 - (void) buyFeature:(NSString*) featureId
-         onComplete:(void (^)(NSString*)) completionBlock         
+         onComplete:(void (^)(NSString*, NSData*)) completionBlock         
         onCancelled:(void (^)(void)) cancelBlock;
 
 // use this method to restore a purchase
@@ -82,4 +82,11 @@
 
 -(void) restoreCompleted;
 -(void) restoreFailedWithError:(NSError*) error;
+
+// custom products
+- (void) requestProductData:(NSSet *)products withAction:(void(^)(void))action;
+
+// products from plist file
+- (void) requestProductDataWithAction:(void(^)(void))action;
+
 @end
