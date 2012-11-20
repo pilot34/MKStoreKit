@@ -55,15 +55,11 @@
 
 @property (nonatomic, copy) void (^onRestoreFailed)(NSError* error);
 @property (nonatomic, copy) void (^onRestoreCompleted)();
+@property (nonatomic, copy) void (^onProductDataRequested)();
 
 @property (nonatomic, assign, getter=isProductsAvailable) BOOL isProductsAvailable;
-
 @property (nonatomic, strong) SKProductsRequest *productsRequest;
 
-- (void) requestProductData;
-- (void) startVerifyingSubscriptionReceipts;
--(void) rememberPurchaseOfProduct:(NSString*) productIdentifier withReceipt:(NSData*) receiptData;
--(void) addToQueue:(NSString*) productId;
 @end
 
 @implementation MKStoreManager
@@ -182,7 +178,6 @@ static MKStoreManager* _sharedStoreManager;
 #ifdef __IPHONE_6_0
       _sharedStoreManager.hostedContents = [NSMutableArray array];
 #endif
-      [_sharedStoreManager requestProductData];
       [[SKPaymentQueue defaultQueue] addTransactionObserver:_sharedStoreManager];
       [_sharedStoreManager startVerifyingSubscriptionReceipts];
     });
@@ -230,7 +225,16 @@ static MKStoreManager* _sharedStoreManager;
   self.onRestoreFailed = nil;
 }
 
--(void) requestProductData
+- (void)requestProductData:(NSSet *)products withAction:(void(^)(void))action
+{
+    self.onProductDataRequested = action;
+    
+    self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:products];
+    self.productsRequest.delegate = self;
+    [self.productsRequest start];
+}
+
+- (void) requestProductDataWithAction:(void(^)(void))action
 {
   NSMutableArray *productsArray = [NSMutableArray array];
   NSArray *consumables = [[[MKStoreManager storeKitItems] objectForKey:@"Consumables"] allKeys];
@@ -241,9 +245,7 @@ static MKStoreManager* _sharedStoreManager;
   [productsArray addObjectsFromArray:nonConsumables];
   [productsArray addObjectsFromArray:subscriptions];
   
-	self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithArray:productsArray]];
-	self.productsRequest.delegate = self;
-	[self.productsRequest start];
+  [self requestProductData:[NSSet setWithArray:productsArray] withAction:action];
 }
 
 +(NSMutableArray*) allProducts {

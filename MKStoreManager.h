@@ -68,6 +68,11 @@
 - (NSMutableDictionary *)pricesDictionary;
 - (NSMutableArray*) purchasableObjectsDescription;
 
+// request info about set of products
+- (void)requestProductData:(NSSet *)products withAction:(void(^)(void))action;
+// request info about all products
+- (void) requestProductDataWithAction:(void(^)(void))action;
+
 // use this method to start a purchase
 - (void) buyFeature:(NSString*) featureId
          onComplete:(void (^)(NSString* purchasedFeature, NSData*purchasedReceipt, NSArray* availableDownloads)) completionBlock
