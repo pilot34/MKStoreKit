@@ -299,6 +299,12 @@ static MKStoreManager* _sharedStoreManager;
 	self.isProductsAvailable = YES;
   [[NSNotificationCenter defaultCenter] postNotificationName:kProductFetchedNotification
                                                       object:[NSNumber numberWithBool:self.isProductsAvailable]];
+    
+    if (self.onProductDataRequested)
+        self.onProductDataRequested();
+    
+    self.onProductDataRequested = nil;
+
 	self.productsRequest = nil;
 }
 
