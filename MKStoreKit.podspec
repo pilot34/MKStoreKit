@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author   = { 'Mugunth' => 'http://mugunthkumar.com/' }
   s.source   = { :git => 'https://github.com/pilot34/MKStoreKit.git' }
   s.platform = :ios
-  s.source_files = '*.{h,m}'
+  s.source_files = FileList['*.{h,m}'].exclude('VerificationController.{h,m}')
   s.requires_arc = true
 
 
@@ -16,4 +16,7 @@ Pod::Spec.new do |s|
   s.dependency 'JSONKit', '~> 1.4'
   s.dependency 'NSData+Base64', '~> 1.0'
   s.dependency 'SFHFKeychainUtils', '0.0.1'
+
+  
+
 end
