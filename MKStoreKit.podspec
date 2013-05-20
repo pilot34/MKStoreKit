@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.author   = { 'Mugunth' => 'http://mugunthkumar.com/' }
   s.source   = { :git => 'https://github.com/pilot34/MKStoreKit.git' }
   s.platform = :ios
-  s.source_files = FileList['*.{h,m}'].exclude('VerificationController.h').exclude('VerificationController.m')
+  s.source_files = FileList['*.{h,m}'].(/VerificationController/)
   s.requires_arc = true
 
 
